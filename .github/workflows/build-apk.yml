@@ -1,0 +1,22 @@
+name: Build Hasnaa APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter create mobile --org com.hasnaa --project-name hasnaa
+      - run: flutter build apk --release
+        working-directory: mobile
+      - uses: actions/upload-artifact@v7
+        with:
+          name: hasnaa-apk
+          path: mobile/build/app/outputs/flutter-apk/app-release.apk
